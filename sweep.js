@@ -6,11 +6,11 @@ exports = module.exports = function() {
 };
 
 function doSweep() {
-  // Try to clean up. But this is not guaranteed to happen.
   var timerKey = me.getTimerKey_(key, cat_key);
   var now = +new Date();
 
   client.zrangebyscore([timerKey, 0, now], function(err, results) {
+    // Decrement counter for anything with a stored expiration that has passed.
     if (err) {
       // TODO handle or record this
       return;
