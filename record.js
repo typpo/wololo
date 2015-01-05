@@ -14,7 +14,7 @@ function Record(req, res, prefix, required_fields) {
   var required_fields = _.extend(REQUIRED_FIELDS, required_fields);
 
   if (!prefix) {
-    throw "Record prefix is required for records all."
+    throw "Record prefix is required for all records."
   }
 
   Record.prototype.save = function() {
@@ -45,7 +45,6 @@ function Record(req, res, prefix, required_fields) {
   };
 
   Record.prototype.recordKeys_ = function(key, cat_key) {
-    // TODO Move this and other logic to its own lib.
     var deferred = Q.defer();
     var countKey = getCountKey(prefix, key, cat_key);
     var timerKey = getTimerKey(prefix, key, cat_key);
