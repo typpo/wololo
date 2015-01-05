@@ -2,8 +2,9 @@ var Record = require('../../record.js').Record;
 
 // Generic counter with longer lifetime.
 exports = module.exports = function(req, res) {
-  // TODO grab ttl from database/configuration on per-account basis.
-  var recordObj = new Record(req, 'event', ['ttl']);
+  // 'name' param allows different events with individual lifetimes, eg.
+  // 'purchase', 'like', and so on.
+  var recordObj = new Record(req, 'event', ['name', 'ttl']);
 
   recordObj.save().then(function() {
     view_util.success(res);

@@ -10,6 +10,8 @@ var RECORD_LIFETIME_MINUTES = 1;
 
 function Record(req, prefix, required_fields) {
   var me = this;
+  // TODO Grab TTL from database/configuration based on prefix or event name,
+  // on a per-account basis.
   var lifetime_in_minutes;
   var required_fields = _.extend(REQUIRED_FIELDS, required_fields);
 
@@ -28,6 +30,11 @@ function Record(req, prefix, required_fields) {
     if (missingFields.length > 0) {
       deferred.reject('Missing required fields: ' + missingFields.join(', '));
       return deferred.promise;
+    }
+
+    if (req.query.name) {
+      // User has specified a name for this event, which we treat as a prefix.
+      prefix = prefix + ':' name;
     }
 
     // It's a valid request; handle it.

@@ -14,7 +14,6 @@ var routes = {
 
 // Setup Route Bindings
 exports = module.exports = function(app) {
-
 	// Views
 	app.get('/', routes.views.index);
 	app.all('/contact', routes.views.contact);
