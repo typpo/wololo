@@ -8,9 +8,6 @@ function startSweep() {
 }
 
 function sweep_() {
-  var now = +new Date();
-
-  // TODO!! get all timer keys
   client.keys('timer:*', function(err, results) {
     if (err) {
       console.error('CRITICAL: Sweep failed - timer:* errored.');
@@ -18,6 +15,7 @@ function sweep_() {
     }
 
     results.forEach(function(timerKey) {
+      var now = +new Date();
       client.zrangebyscore([timerKey, 0, now], function(err, results) {
         if (err) {
           // TODO handle or record this, it means a timer won't be executed
@@ -26,8 +24,9 @@ function sweep_() {
           return;
         }
         results.forEach(function(countKey) {
-          // Decrement counter for anything with a stored expiration that has passed.
-          console.log('zrangebysco result: ', countKey);
+          // Decrement counter for anything with a stored expiration that has
+          // passed.
+          console.log('Decrementing zrangebyscore result: ', countKey);
           client.decr(countKey);
         }); // forEach
       }); // client.zrangebyscore
