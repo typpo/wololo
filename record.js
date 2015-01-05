@@ -1,21 +1,21 @@
-var keystone = require('keystone');
 var Q = require('q');
-
 var redis = require('redis');
 var client = redis.createClient();
 
+// Default required fields.
 var REQUIRED_FIELDS = ['key', 'category_key'];
 
-// Number of minutes for each impression to last.
+// Default number of minutes for each impression to last.
 var RECORD_LIFETIME_MINUTES = 1;
 
-exports = module.exports = function(req, res) {
-  var recordObj = new Record(req, res);
-  recordObj.save();
-};
-
-function Record(req, res) {
+function Record(req, res, prefix, required_fields) {
   var me = this;
+  var lifetime_in_minutes;
+  var required_fields = _.extend(REQUIRED_FIELDS, required_fields);
+
+  if (!prefix) {
+    throw "Record prefix is required for records all."
+  }
 
   Record.prototype.save = function() {
     var missingFields = me.getMissingFields_(req);
@@ -23,6 +23,9 @@ function Record(req, res) {
       me.error_('Missing required fields: ' + missingFields.join(', '));
       return;
     }
+
+    // It's a valid request; handle it.
+    me.lifetime_in_minutes = RECORD_LIFETIME_MINUTES || req.query.lifetime;
     me.recordKeys_(req.query.key, req.query.category_key).then(function() {
       me.success_();
     }, function(reason) {
@@ -42,9 +45,10 @@ function Record(req, res) {
   };
 
   Record.prototype.recordKeys_ = function(key, cat_key) {
+    // TODO Move this and other logic to its own lib.
     var deferred = Q.defer();
-    var countKey = me.getCountKey_(key, cat_key);
-    var timerKey = me.getTimerKey_(key, cat_key);
+    var countKey = getCountKey(prefix, key, cat_key);
+    var timerKey = getTimerKey(prefix, key, cat_key);
     var expireAt = me.addMinutes_(new Date(), RECORD_LIFETIME_MINUTES);
     client.multi()
       .incr(countKey)
@@ -76,3 +80,17 @@ function Record(req, res) {
     return new Date(date.getTime() + minutes*60000);
   };
 }
+
+function getCountKey(prefix, key, cat_key) {
+  return 'count:' + prefix + ':' + key + ':' + cat_key;
+};
+
+function getTimerKey(prefix, key, cat_key) {
+  return 'timer:' + prefix + ':' + key + ':' + cat_key;
+};
+
+module.exports = {
+  Record: Record,
+  getCountKey: getCountKey,
+  getTimerKey: getTimerKey,
+};

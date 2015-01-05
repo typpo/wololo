@@ -1,14 +1,18 @@
+var record = require('./record');
 var redis = require('redis');
 var client = redis.createClient();
-
 
 function startSweep() {
   setInterval(sweep_, 60*1000);
 }
 
 function sweep_() {
-  var timerKey = me.getTimerKey_(key, cat_key);
   var now = +new Date();
+
+  // TODO!! get all timer keys
+  // client.keys('timer:')
+
+  //var timerKey = record.getTimerKey(prefix, key, cat_key);
 
   client.zrangebyscore([timerKey, 0, now], function(err, results) {
     if (err) {
@@ -23,16 +27,6 @@ function sweep_() {
   });
 }
 
-function getCountKey(key, cat_key) {
-  return key + ':' + cat_key + ':count'
-};
-
-function getTimerKey(key, cat_key) {
-  return key + ':' + cat_key + ':timer'
-};
-
 exports = module.exports = {
   startSweep: startSweep,
-  getCountKey: getCountKey,
-  getTimerKey: getTimerKey,
 };
