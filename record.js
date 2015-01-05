@@ -76,6 +76,7 @@ function Record(req, prefix, required_fields) {
   };
 }
 
+// TODO keys should be namespaced by account.
 function getCountKey(prefix, key, cat_key) {
   return 'count:' + prefix + ':' + key + ':' + cat_key;
 };

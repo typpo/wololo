@@ -18,7 +18,7 @@ exports = module.exports = function(app) {
 	app.get('/', routes.views.index);
 	app.all('/contact', routes.views.contact);
 
-  app.get('/viewing', routes.views.currentlyviewing);
-  app.get('/event', routes.views.event);
+  app.get('/:account/viewing', routes.views.currentlyviewing);
+  app.get('/:account/event', routes.views.event);
   app.get('/wololo.js', routes.views.record);
 };
