@@ -3,6 +3,7 @@ var redis = require('redis');
 var client = redis.createClient();
 
 function startSweep() {
+  // Every minute.
   setInterval(sweep_, 60*1000);
 }
 
@@ -10,21 +11,28 @@ function sweep_() {
   var now = +new Date();
 
   // TODO!! get all timer keys
-  // client.keys('timer:')
-
-  //var timerKey = record.getTimerKey(prefix, key, cat_key);
-
-  client.zrangebyscore([timerKey, 0, now], function(err, results) {
+  client.keys('timer:*', function(err, results) {
     if (err) {
-      // TODO handle or record this
+      console.error('CRITICAL: Sweep failed - timer:* errored.');
       return;
     }
-    results.forEach(function(countKey) {
-      // Decrement counter for anything with a stored expiration that has passed.
-      console.log('zrangebysco result: ', countKey);
-      client.decr(countKey);
-    });
-  });
+
+    results.forEach(function(timerKey) {
+      client.zrangebyscore([timerKey, 0, now], function(err, results) {
+        if (err) {
+          // TODO handle or record this, it means a timer won't be executed
+          // properly (ie. counter isn't decrementedon time)
+          console.error('Could not decrement counter for timerKey', timerKey);
+          return;
+        }
+        results.forEach(function(countKey) {
+          // Decrement counter for anything with a stored expiration that has passed.
+          console.log('zrangebysco result: ', countKey);
+          client.decr(countKey);
+        }); // forEach
+      }); // client.zrangebyscore
+    }); // forEach
+  }); // client.keys
 }
 
 exports = module.exports = {

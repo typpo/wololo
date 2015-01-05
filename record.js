@@ -14,7 +14,11 @@ function Record(req, res, prefix, required_fields) {
   var required_fields = _.extend(REQUIRED_FIELDS, required_fields);
 
   if (!prefix) {
-    throw "Record prefix is required for all records."
+    console.error('Record prefix is required for all records. ' +
+                  'Is there a route that does not pass a prefix?');
+    me.error_('This record could not be stored due to an error in route ' +
+              'implementation.');
+    return;
   }
 
   Record.prototype.save = function() {
