@@ -1,3 +1,3 @@
 // Entry point for the app.
-require('sweep')();
+require('./sweep').startSweep();
 require('keystone');
