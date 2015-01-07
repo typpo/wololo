@@ -13,17 +13,17 @@ keystone.init({
 
 	'name': 'wololo',
 	'brand': 'wololo',
-	
+
 	'less': 'public',
 	'static': 'public',
 	'favicon': 'public/favicon.ico',
 	'views': 'templates/views',
 	'view engine': 'swig',
-	
+
 	'custom engine': swig.renderFile,
-	
+
 	'emails': 'templates/emails',
-	
+
 	'auto update': true,
 	'session': true,
 	'auth': true,
@@ -73,4 +73,5 @@ keystone.set('nav', {
 	'users': 'users'
 });
 
+console.log('Starting keystone...');
 keystone.start();

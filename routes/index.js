@@ -20,6 +20,4 @@ exports = module.exports = function(app) {
 
   app.get('/:account/viewing', routes.views.currentlyviewing);
   app.get('/:account/event', routes.views.event);
-
-  app.get('/wololo.js', routes.views.record);
 };

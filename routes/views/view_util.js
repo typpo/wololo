@@ -4,12 +4,12 @@ exports = module.exports = {
     res.send({
       success: true,
     });
-  };
+  },
 
   error: function(res, msg) {
     res.send({
       success: false,
       message: msg,
     });
-  };
+  },
 };

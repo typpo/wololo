@@ -34,7 +34,7 @@ function Record(req, prefix, required_fields) {
 
     if (req.query.name) {
       // User has specified a name for this event, which we treat as a prefix.
-      prefix = prefix + ':' name;
+      prefix = prefix + ':' + name;
     }
 
     // It's a valid request; handle it.
