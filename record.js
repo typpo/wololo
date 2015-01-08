@@ -38,8 +38,13 @@ function Record(req, prefix, required_fields) {
     }
 
     // It's a valid request; handle it.
-    me.lifetime_in_minutes = RECORD_LIFETIME_MINUTES || req.query.lifetime;
+    me.lifetime_in_minutes = RECORD_LIFETIME_MINUTES || lifetime_in_minutes ||
+      req.query.lifetime;
     return me.recordKeys_(req.query.key, req.query.category_key);
+  };
+
+  Record.prototype.setTtlMinutes = function(ttl) {
+    lifetime_in_minutes = ttl;
   };
 
   Record.prototype.getMissingFields_ = function(req) {
