@@ -1,4 +1,4 @@
-
 exports = module.exports = function(req, res) {
-	req.send('wololo_external.js');
+  // TODO minify this.
+  res.sendfile('public/js/wololo_external.js');
 };
