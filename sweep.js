@@ -5,7 +5,7 @@ var client = redis.createClient();
 function startSweep() {
   // Every minute.
   sweep();
-  setInterval(sweep, 60*1000);
+  setInterval(sweep, 30 * 1000);
 }
 
 function sweep() {

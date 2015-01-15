@@ -88,7 +88,9 @@ function getCountKey(prefix, key, cat_key, ttl) {
 };
 
 function getTimerKey(prefix, key, cat_key, ttl) {
-  return 'timer:' + prefix + ':' + key + ':' + cat_key + ':' + ttl;
+  return 'timer:' + prefix + ':' + key + ':' + cat_key + ':' + ttl + ':' +
+    // Random part so that each view gets its own timer.
+    (+new Date()) + '_' + (Math.floor(Math.random() * 1000));
 };
 
 module.exports = {
