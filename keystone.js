@@ -28,8 +28,9 @@ keystone.init({
 	'session': true,
 	'auth': true,
 	'user model': 'User',
-	'cookie secret': 'n88z?G-,Vt(,l^H<>akQg$1vnh8Z_Br82kg(EIP{?M(o9pa2!Grrg}gGz6p@e]~p'
+	'cookie secret': 'n88z?G-,Vt(,l^H<>akQg$1vnh8Z_Br82kg(EIP{?M(o9pa2!Grrg}gGz6p@e]~p',
 
+  'port': 14000,
 });
 
 keystone.import('models');
