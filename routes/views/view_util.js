@@ -1,8 +1,9 @@
 // API response boilerplate.
 exports = module.exports = {
- success: function(res) {
+ success: function(res, count) {
     res.send({
       success: true,
+      count: count,
     });
   },
 

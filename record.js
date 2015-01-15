@@ -1,3 +1,4 @@
+var _ = require('underscore');
 var Q = require('q');
 var redis = require('redis');
 var client = redis.createClient();
@@ -6,7 +7,7 @@ var client = redis.createClient();
 var REQUIRED_FIELDS = ['key', 'category_key'];
 
 // Default number of minutes for each impression to last.
-var RECORD_LIFETIME_MINUTES = 1;
+var DEFAULT_LIFETIME_MINUTES = 1;
 
 function Record(req, prefix, required_fields) {
   var me = this;
@@ -38,8 +39,8 @@ function Record(req, prefix, required_fields) {
     }
 
     // It's a valid request; handle it.
-    me.lifetime_in_minutes = RECORD_LIFETIME_MINUTES || lifetime_in_minutes ||
-      req.query.lifetime;
+    lifetime_in_minutes = lifetime_in_minutes || req.query.lifetime ||
+      DEFAULT_LIFETIME_MINUTES;
     return me.recordKeys_(req.query.key, req.query.category_key);
   };
 
@@ -49,8 +50,8 @@ function Record(req, prefix, required_fields) {
 
   Record.prototype.getMissingFields_ = function(req) {
     var missing = [];
-    for (var i in REQUIRED_FIELDS) {
-      var field = REQUIRED_FIELDS[i];
+    for (var i in required_fields) {
+      var field = required_fields[i];
       if (!req.query[field]) {
         missing.push(field);
       }
@@ -60,9 +61,9 @@ function Record(req, prefix, required_fields) {
 
   Record.prototype.recordKeys_ = function(key, cat_key) {
     var deferred = Q.defer();
-    var countKey = getCountKey(prefix, key, cat_key);
-    var timerKey = getTimerKey(prefix, key, cat_key);
-    var expireAt = me.addMinutes_(new Date(), me.lifetime_in_minutes);
+    var countKey = getCountKey(prefix, key, cat_key, lifetime_in_minutes);
+    var timerKey = getTimerKey(prefix, key, cat_key, lifetime_in_minutes);
+    var expireAt = me.addMinutes_(new Date(), lifetime_in_minutes);
     client.multi()
       .incr(countKey)
       .zadd([timerKey, expireAt.getTime(), countKey])
@@ -70,7 +71,7 @@ function Record(req, prefix, required_fields) {
         if (err) {
           deferred.reject(err);
         } else {
-          deferred.resolve();
+          deferred.resolve(replies[0]);
         }
       });
     return deferred.promise;
@@ -82,12 +83,12 @@ function Record(req, prefix, required_fields) {
 }
 
 // TODO keys should be namespaced by account.
-function getCountKey(prefix, key, cat_key) {
-  return 'count:' + prefix + ':' + key + ':' + cat_key;
+function getCountKey(prefix, key, cat_key, ttl) {
+  return 'count:' + prefix + ':' + key + ':' + cat_key + ':' + ttl;
 };
 
-function getTimerKey(prefix, key, cat_key) {
-  return 'timer:' + prefix + ':' + key + ':' + cat_key;
+function getTimerKey(prefix, key, cat_key, ttl) {
+  return 'timer:' + prefix + ':' + key + ':' + cat_key + ':' + ttl;
 };
 
 module.exports = {
