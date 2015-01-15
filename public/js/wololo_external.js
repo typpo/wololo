@@ -2,30 +2,48 @@
 
 !(function() {
   'use strict';
-  var HOST = 'http://wololo.com';
+  var HOST = window.location.href.indexOf('localhost') > -1 ?
+    'http://localhost:14000' : 'http://wololo.io';
   if (window.wololo) {
     throw 'Could not load wololo - do you already have it on the page?';
     return;
   }
 
   window.wololo = {
-    record: function(name, key, opts) {
-      //var name = opts['name'] || 'view';
-      var cat_key = opts['cat_key'];
+    name: 'unknown',
 
-      var url = HOST + '/viewing?key=' + key;
+    init: function(account) {
+      this.name = account;
+    },
+
+    recordView: function(key, opts) {
+      return this.record('view', key, opts);
+    },
+
+    record: function(name, key, opts) {
+      opts = opts || {};
+      //var name = opts['name'] || 'view';
+      var cat_key = opts['category_key'];
+
+      var url = HOST + '/' + this.name + '/viewing?key=' + key;
       if (cat_key) {
-        url += '&cat_key=' + cat_key;
+        url += '&category_key=' + cat_key;
       }
 
       get(url, function(xmldoc) {
-        // ...
+        var resp = JSON.parse(xmldoc.response);
+        alert(resp.count);
       });
     },
+
+    getCount: function(name, key) {
+
+    }
   };
 
   function get(url, callback) {
     if (!window.XMLHttpRequest) {
+      // We don't support old versions of IE.
       return;
     }
 

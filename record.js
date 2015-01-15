@@ -4,7 +4,7 @@ var redis = require('redis');
 var client = redis.createClient();
 
 // Default required fields.
-var REQUIRED_FIELDS = ['key', 'category_key'];
+var REQUIRED_FIELDS = ['key'];
 
 // Default number of minutes for each impression to last.
 var DEFAULT_LIFETIME_MINUTES = 1;
@@ -41,7 +41,7 @@ function Record(req, prefix, required_fields) {
     // It's a valid request; handle it.
     lifetime_in_minutes = lifetime_in_minutes || req.query.lifetime ||
       DEFAULT_LIFETIME_MINUTES;
-    return me.recordKeys_(req.query.key, req.query.category_key);
+    return me.recordKeys_(req.query.key, req.query.category_key || 'default');
   };
 
   Record.prototype.setTtlMinutes = function(ttl) {
