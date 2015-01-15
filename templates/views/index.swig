@@ -34,6 +34,6 @@
   <script src="http://localhost:14000/wololo.js"></script>
   <script>
     wololo.init('testacct');
-    wololo.recordView('foo');
+    wololo.view('foo');
   </script>
 {% endblock %}

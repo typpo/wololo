@@ -16,13 +16,8 @@
       this.name = account;
     },
 
-    recordView: function(key, opts) {
-      return this.record('view', key, opts);
-    },
-
-    record: function(name, key, opts) {
+    view: function(key, opts) {
       opts = opts || {};
-      //var name = opts['name'] || 'view';
       var cat_key = opts['category_key'];
 
       var url = HOST + '/' + this.name + '/viewing?key=' + key;
