@@ -7,7 +7,11 @@ exports = module.exports = function(req, res) {
   var helper = new Helper(req, res);
 
   // 1 minute
-  helper.createRecord(1);
+  helper.createRecord(1).then(function(count) {
+    view_util.success(res, count);
+  }, function(reason) {
+    view_util.error(res, reason);
+  });
 
   // 1 day
   helper.createRecord(24 * 60);
@@ -27,10 +31,8 @@ function Helper(req, res) {
     var recordObj = new Record(req, 'viewing');
     recordObj.setTtlMinutes(expireInMinutes);
 
-    recordObj.save().then(function(count) {
-      view_util.success(res, count);
-    }, function(reason) {
-      view_util.error(res, reason);
-    });
-  }
+    // TODO send back stats for everything. Or at least standardize what gets
+    // sent back.
+    return recordObj.save()
+  };
 }
