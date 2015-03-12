@@ -3,6 +3,11 @@ var Q = require('q');
 var redis = require('redis');
 var client = redis.createClient();
 
+// Use database 2.
+client.select(2, function() {
+  // There's a race condition here.
+});
+
 // Default required fields.
 var REQUIRED_FIELDS = ['key'];
 
