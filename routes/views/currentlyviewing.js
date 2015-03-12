@@ -20,10 +20,10 @@ exports = module.exports = function(req, res) {
   helper.createRecord(24 * 60 * 7);
 
   // 1 month
-  helper.createRecord(24 * 60 * 30);
+  // helper.createRecord(24 * 60 * 30);
 
   // 1 year
-  helper.createRecord(24 * 60 * 365);
+  // helper.createRecord(24 * 60 * 365);
 };
 
 function Helper(req, res) {

@@ -16,6 +16,12 @@ function Record(req, prefix, required_fields) {
   var lifetime_in_minutes;
   var required_fields = _.extend(REQUIRED_FIELDS, required_fields);
 
+  var record_opts = {
+    key: null,
+    category_key: null,
+    account: null,
+  };
+
   Record.prototype.save = function() {
     var deferred = Q.defer();
     if (!prefix) {
@@ -41,7 +47,12 @@ function Record(req, prefix, required_fields) {
     // It's a valid request; handle it.
     lifetime_in_minutes = lifetime_in_minutes || req.query.lifetime ||
       DEFAULT_LIFETIME_MINUTES;
-    return me.recordKeys_(req.query.key, req.query.category_key || 'default');
+
+    record_opts.key = req.query.key;
+    record_opts.category_key = req.query.category_key || 'default';
+    record_opts.account = req.params.account;
+
+    return me.recordKeys_();
   };
 
   Record.prototype.setTtlMinutes = function(ttl) {
@@ -59,10 +70,12 @@ function Record(req, prefix, required_fields) {
     return missing;
   };
 
-  Record.prototype.recordKeys_ = function(key, cat_key) {
+  Record.prototype.recordKeys_ = function() {
     var deferred = Q.defer();
-    var countKey = getCountKey(prefix, key, cat_key, lifetime_in_minutes);
-    var timerKey = getTimerKey(prefix, key, cat_key, lifetime_in_minutes);
+    var countKey = getCountKey(prefix, record_opts.account, record_opts.key,
+                               record_opts.category_key, lifetime_in_minutes);
+    var timerKey = getTimerKey(prefix, record_opts.account, record_opts.key,
+                               record_opts.category_key, lifetime_in_minutes);
     var expireAt = me.addMinutes_(new Date(), lifetime_in_minutes);
     client.multi()
       .incr(countKey)
@@ -71,6 +84,7 @@ function Record(req, prefix, required_fields) {
         if (err) {
           deferred.reject(err);
         } else {
+          // Resolve with count.
           deferred.resolve(replies[0]);
         }
       });
@@ -83,12 +97,12 @@ function Record(req, prefix, required_fields) {
 }
 
 // TODO keys should be namespaced by account.
-function getCountKey(prefix, key, cat_key, ttl) {
-  return 'count:' + prefix + ':' + key + ':' + cat_key + ':' + ttl;
+function getCountKey(prefix, account, key, cat_key, ttl) {
+  return 'count:' + prefix + ':' + account + ':' + key + ':' + cat_key + ':' + ttl;
 };
 
-function getTimerKey(prefix, key, cat_key, ttl) {
-  return 'timer:' + prefix + ':' + key + ':' + cat_key + ':' + ttl + ':' +
+function getTimerKey(prefix, account, key, cat_key, ttl) {
+  return 'timer:' + prefix + ':' + account + ':' + key + ':' + cat_key + ':' + ttl + ':' +
     // Random part so that each view gets its own timer.
     (+new Date()) + '_' + (Math.floor(Math.random() * 1000));
 };
