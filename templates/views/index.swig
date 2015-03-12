@@ -31,7 +31,7 @@
 			</p>
 		</div>
 	</div>
-  <script src="http://localhost:14000/wololo.js"></script>
+  <script src="http://www.wololo.io/wololo.js"></script>
   <script>
     wololo.init('test_account');
     wololo.view('key_for_this_page').then(function(count) {
