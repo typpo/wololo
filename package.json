@@ -9,7 +9,8 @@
     "swig": "~1.4.1",
     "dotenv": "0.4.0",
     "redis": "latest",
-    "q": "latest"
+    "q": "latest",
+    "uglify-js": "latest"
   },
   "devDependencies": {
     "gulp": "~3.6.2",
