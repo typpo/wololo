@@ -14,6 +14,7 @@
 
     init: function(account) {
       this.name = account;
+      loadCss('http://localhost:14000/styles/lib/libnotify.css');
     },
 
     view: function(key, opts) {
@@ -25,14 +26,23 @@
         url += '&category_key=' + cat_key;
       }
 
+      var promiseCallback = null;
       get(url, function(xmldoc) {
         var resp = JSON.parse(xmldoc.response);
-        alert(resp.count);
+        if (promiseCallback) {
+          promiseCallback(resp.count);
+        }
       });
+
+      return {
+        then: function(userSuppliedCallback) {
+          promiseCallback = userSuppliedCallback;
+        }
+      };
     },
 
-    getCount: function(name, key) {
-
+    showMessage: function(msg) {
+      humane.log(msg);
     }
   };
 
@@ -50,6 +60,20 @@
       }
     }
     xmlDoc.send();
+  }
+
+  function loadCss(url) {
+    var cssId = 'wololo-' + (+new Date());
+    if (!document.getElementById(cssId)) {
+      var head  = document.getElementsByTagName('head')[0];
+      var link  = document.createElement('link');
+      link.id   = cssId;
+      link.rel  = 'stylesheet';
+      link.type = 'text/css';
+      link.href = url;
+      link.media = 'all';
+      head.appendChild(link);
+    }
   }
 })();
 

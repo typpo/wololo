@@ -34,6 +34,8 @@
   <script src="http://localhost:14000/wololo.js"></script>
   <script>
     wololo.init('testacct');
-    wololo.view('foo');
+    wololo.view('foo').then(function(count) {
+      wololo.showMessage(count + ' people viewing this page.');
+    });
   </script>
 {% endblock %}
