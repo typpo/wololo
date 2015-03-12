@@ -3,7 +3,7 @@
 !(function() {
   'use strict';
   var HOST = window.location.href.indexOf('localhost') > -1 ?
-    'http://localhost:14000' : 'http://wololo.io';
+    'http://localhost:14000' : '//www.wololo.io';
   if (window.wololo) {
     throw 'Could not load wololo - do you already have it on the page?';
     return;
@@ -28,13 +28,17 @@
         url += '&category_key=' + cat_key;
       }
 
+      var script = document.createElement('script');
+      script.src = url;
+      document.getElementsByTagName('head')[0].appendChild(script);
+
       var promiseCallback = null;
-      get(url, function(xmldoc) {
-        var resp = JSON.parse(xmldoc.response);
+      // TODO there is a race condition here.
+      window.wololoCb = function(resp) {
         if (promiseCallback) {
           promiseCallback(resp.count);
         }
-      });
+      }
 
       return {
         then: function(userSuppliedCallback) {
