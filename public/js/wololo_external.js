@@ -12,9 +12,11 @@
   window.wololo = {
     name: 'unknown',
 
-    init: function(account) {
+    init: function(account, useCustomCss) {
       this.name = account;
-      loadCss('http://localhost:14000/styles/lib/libnotify.css');
+      if (!useCustomCss) {
+        loadCss('http://localhost:14000/styles/lib/libnotify.css');
+      }
     },
 
     view: function(key, opts) {
