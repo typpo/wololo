@@ -15,7 +15,7 @@
     init: function(account, useCustomCss) {
       this.name = account;
       if (!useCustomCss) {
-        loadCss('//www.wololo.io/styles/lib/libnotify.css');
+        loadCss(HOST + '/styles/lib/libnotify.css');
       }
     },
 
