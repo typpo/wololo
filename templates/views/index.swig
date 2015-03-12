@@ -33,9 +33,10 @@
 	</div>
   <script src="http://localhost:14000/wololo.js"></script>
   <script>
-    wololo.init('testacct');
-    wololo.view('foo').then(function(count) {
-      wololo.showMessage(count + ' people viewing this page.');
+    wololo.init('test_account');
+    wololo.view('key_for_this_page').then(function(count) {
+      wololo.showMessage(count + ' ' + (count == 1 ? 'person' : 'people') +
+        ' viewing this page.');
     });
   </script>
 {% endblock %}
