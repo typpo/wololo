@@ -9,6 +9,7 @@ function startSweep() {
 }
 
 function sweep() {
+  console.log('Sweeping');
   client.keys('timer:*', function(err, results) {
     if (err) {
       console.error('CRITICAL: Sweep failed - timer:* errored.');
