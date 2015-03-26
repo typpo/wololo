@@ -3,9 +3,12 @@ var redis = require('redis');
 var client = redis.createClient();
 
 function startSweep() {
-  // Every minute.
-  sweep();
-  setInterval(sweep, 30 * 1000);
+  // Use database 2.
+  client.select(2, function() {
+    sweep();
+    // Every minute.
+    setInterval(sweep, 30 * 1000);
+  });
 }
 
 function sweep() {
