@@ -15,7 +15,8 @@ var routes = {
 // Setup Route Bindings
 exports = module.exports = function(app) {
 	// Views
-	app.get('/', routes.views.index);
+	app.get('/', routes.views.splash);
+	app.get('/home', routes.views.index);
 	app.all('/contact', routes.views.contact);
 
   app.get('/:account/viewing', routes.views.currentlyviewing);
