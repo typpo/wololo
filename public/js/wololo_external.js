@@ -48,7 +48,7 @@
     },
 
     showMessage: function(msg) {
-      humane.log(msg, { timeout: 3000 });
+      humane.log(msg, { timeout: 4000 });
     }
   };
 
