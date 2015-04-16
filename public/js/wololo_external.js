@@ -39,9 +39,10 @@
       document.getElementsByTagName('head')[0].appendChild(script);
 
       var promiseCallback = null;
-      // TODO there is a race condition here?
+      // TODO there is a race condition here where script is called before
+      // this is defined and user defines.
       window.wololoCb = function(resp) {
-        if (promiseCallback) {
+        if (resp.count > 0 && promiseCallback) {
           promiseCallback(resp.count);
         }
       }
