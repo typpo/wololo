@@ -10,7 +10,8 @@
     "dotenv": "0.4.0",
     "redis": "latest",
     "q": "latest",
-    "uglify-js": "latest"
+    "uglify-js": "latest",
+    "express-session": "latest"
   },
   "devDependencies": {
     "gulp": "~3.6.2",

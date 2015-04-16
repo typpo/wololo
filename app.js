@@ -14,7 +14,6 @@ var keystone = require('keystone'),
 swig.setDefaults({ cache: false });
 
 keystone.init({
-
 	'name': 'wololo',
 	'brand': 'wololo',
 
@@ -29,6 +28,12 @@ keystone.init({
 	'emails': 'templates/emails',
 
 	'auto update': true,
+  'express session': 'connect-redis',
+  'session store options': {
+    'sessionStore': {
+      'db': '3', // Database index to use
+    }
+  },
 	'session': true,
 	'auth': true,
 	'user model': 'User',

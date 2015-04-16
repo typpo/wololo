@@ -13,6 +13,10 @@ exports = module.exports = function(req, res) {
     view_util.error(res, reason);
   });
 
+  console.log('sess', req.session);
+  req.session.foo = 'bar';
+  req.session.save();
+
   // 1 day
   helper.createRecord(24 * 60);
 
@@ -31,8 +35,7 @@ function Helper(req, res) {
     var recordObj = new Record(req, 'viewing');
     recordObj.setTtlMinutes(expireInMinutes);
 
-    // TODO send back stats for everything. Or at least standardize what gets
-    // sent back.
+    // TODO send back stats for everything?
     return recordObj.save()
   };
 }
