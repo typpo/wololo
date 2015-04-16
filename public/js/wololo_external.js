@@ -2,8 +2,14 @@
 
 !(function() {
   'use strict';
-  var HOST = window.location.href.indexOf('localhost') > -1 ?
-    'http://localhost:14000' : '//www.wololo.io';
+  var HOST;
+  if (window.location.href.indexOf('localhost') > -1) {
+    HOST = 'http://localhost:14000'
+    console.log('WOLOLO: Using external js host', HOST);
+  } else {
+    HOST = '//www.wololo.io';
+  }
+
   if (window.wololo) {
     throw 'Could not load wololo - do you already have it on the page?';
     return;

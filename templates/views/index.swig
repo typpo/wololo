@@ -31,12 +31,12 @@
 			</p>
 		</div>
 	</div>
-  <script src="http://www.wololo.io/wololo.js"></script>
+  <script src="http://localhost:14000/wololo.js"></script>
   <script>
     wololo.init('test_account');
     wololo.view('key_for_this_page').then(function(count) {
-      wololo.showMessage(count + ' ' + (count == 1 ? 'person' : 'people') +
-        ' viewing this page.');
+      wololo.showMessage(count + ' ' + (count == 1 ? 'shopper' : 'shoppers') +
+        ' on this page.');
     });
   </script>
 {% endblock %}
