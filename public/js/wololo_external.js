@@ -39,7 +39,7 @@
       document.getElementsByTagName('head')[0].appendChild(script);
 
       var promiseCallback = null;
-      // TODO there is a race condition here.
+      // TODO there is a race condition here?
       window.wololoCb = function(resp) {
         if (promiseCallback) {
           promiseCallback(resp.count);
