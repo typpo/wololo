@@ -55,7 +55,7 @@
     },
 
     showMessage: function(msg) {
-      humane.log(msg, { timeout: 4000 });
+      humane.log(msg, { timeout: 5500 });
     }
   };
 
