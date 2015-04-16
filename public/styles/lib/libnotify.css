@@ -16,14 +16,16 @@ body {
 .humane,
 .humane-libnotify {
   font-family: Ubuntu, Arial, sans-serif;
+  font-weight: bold;
   text-align: center;
   font-size: 15px;
   bottom: 15px;
   right: 15px;
   opacity: 0;
-  width: 200px;
+  width: 250px;
   color: #fff;
   padding: 20px;
+  /*
   background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAABQCAYAAADYxx/bAAAABmJLR0QA/wD/AP+gvaeTAAAANElEQVQYlWNgYGB4ysTAwMDAxMjICCUQXDQWAwMDAxMTExMedcRyB6d5CAMQ5hGrjSrmAQBQdgIXlosSTwAAAABJRU5ErkJggg==');
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0, rgba(0,0,0,0.9)), color-stop(1, rgba(50,50,50,0.9))) no-repeat;
   background: -moz-linear-gradient(top, rgba(0,0,0,0.9) 0%, rgba(50,50,50,0.9) 100%) no-repeat;
@@ -32,10 +34,12 @@ body {
   background: -o-linear-gradient(top, rgba(0,0,0,0.9) 0%, rgba(50,50,50,0.9) 100%) no-repeat;
   background: linear-gradient(top, rgba(0,0,0,0.9) 0%, rgba(50,50,50,0.9) 100%) no-repeat;
   *background-color: #000;
-  -webkit-border-radius: 5px;
-  border-radius: 5px;
-  -webkit-box-shadow: 0 4px 4px -4px #000;
-  box-shadow: 0 4px 4px -4px #000;
+  */
+  background-color: #404040;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  -webkit-box-shadow: 0 2px 2px -2px #000;
+  box-shadow: 0 2px 2px -2px #000;
   -moz-transform: translateY(-40px);
   -webkit-transform: translateY(-40px);
   -ms-transform: translateY(-40px);
