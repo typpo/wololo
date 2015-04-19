@@ -1,3 +1,4 @@
+<title>Boost Your Conversion - Wololo</title>
 <style>
 body {
       margin: 0;

@@ -25,6 +25,13 @@ exports = module.exports = function(req, res) {
     }, function(reason) {
       view_util.error(res, reason);
     });
+  } else if (req.params.account === 'milkadeal') {
+    // 1 day
+    helper.createRecord(24 * 60).then(function(count) {
+      view_util.success(res, count);
+    }, function(reason) {
+      view_util.error(res, reason);
+    });
   } else {
     helper.createRecord(1).then(function(count) {
       view_util.success(res, count);

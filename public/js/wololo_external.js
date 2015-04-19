@@ -25,6 +25,16 @@
       }
     },
 
+    recordSku: function(sku, opt_timeframe) {
+      opt_timeframe = opt_timeframe || 'day';
+      this.view(sku).then(function(count) {
+        if (count > 5) {
+            wololo.showMessage(count + ' ' + (count == 1 ? 'shopper' : 'shoppers') +
+                ' in the past ' + opt_timeframe + '.');
+        }
+      });
+    },
+
     view: function(key, opts) {
       opts = opts || {};
       var cat_key = opts['category_key'];
@@ -88,5 +98,12 @@
       head.appendChild(link);
     }
   }
+
+  (function autoInit() {
+    if (typeof wololo_init !== 'undefined') {
+      wololo.init(wololo_init[0]);
+      wololo.recordSku(wololo_init[1], wololo_init[2] || null);
+    }
+  })();
 })();
 
